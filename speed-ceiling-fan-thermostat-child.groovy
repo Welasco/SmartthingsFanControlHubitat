@@ -417,16 +417,29 @@ private betweenSunsetSunRise()
     def isGoodTime = false
 
     if(sunsetsunrise){
-        def s = getSunriseAndSunset(zipCode: zipCode, sunriseOffset: sunriseOffset, sunsetOffset: sunsetOffset)
-        def now = new Date()
-        def sunriseTime = s.sunrise
-        def sunsetTime = s.sunset
+        // def s = getSunriseAndSunset(zipCode: zipCode, sunriseOffset: sunriseOffset, sunsetOffset: sunsetOffset)
+        // def now = new Date()
+        // def sunriseTime = s.sunrise
+        // def sunsetTime = s.sunset
 
-        def between = timeOfDayIsBetween(sunsetTime,sunriseTime,now,location.timeZone)
-        writeLog("def BETWEENSUNSETSUNRISE - betweenSunsetSunRise: SunRiseTime: ${sunriseTime} SunSetTime: ${sunsetTime} now: ${now} between: ${between}")
+        // def between = timeOfDayIsBetween(sunsetTime,sunriseTime,now,location.timeZone)
+        // writeLog("def BETWEENSUNSETSUNRISE - betweenSunsetSunRise: SunRiseTime: ${sunriseTime} SunSetTime: ${sunsetTime} now: ${now} between: ${between}")
 
-        //if(sunsetTime.after(now) || sunriseTime.before(now)) {   //before midnight/after sunset or after midnight/before sunset (checking if the Sun is UP)
-        if(!between) {   //before midnight/after sunset or after midnight/before sunset (checking if the Sun is UP)
+        // //if(sunsetTime.after(now) || sunriseTime.before(now)) {   //before midnight/after sunset or after midnight/before sunset (checking if the Sun is UP)
+        // if(!between) {   //before midnight/after sunset or after midnight/before sunset (checking if the Sun is UP)
+        //     writeLog("def BETWEENSUNSETSUNRISE - Sun is UP")
+        //     isGoodTime = true
+        // }
+
+        // New test code for betweenSunsetSunRise
+        def currTime = new Date()
+        writeLog("def BETWEENSUNSETSUNRISE - betweenSunsetSunRise: SunRiseTime: ${location.sunrise} SunSetTime: ${location.sunset} now: ${currTime}")
+        if (currTime > location.sunset || currTime < location.sunrise) {
+            // it's between sunset and sunrise == Night
+            writeLog("def BETWEENSUNSETSUNRISE - Sun is Down")
+            isGoodTime = false
+        }
+        else{
             writeLog("def BETWEENSUNSETSUNRISE - Sun is UP")
             isGoodTime = true
         }
